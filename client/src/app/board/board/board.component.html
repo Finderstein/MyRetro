@@ -1,0 +1,149 @@
+<div>
+    <div class="d-flex justify-content-between px-5 mb-4">
+        <mat-form-field appearance="legacy" class="w-25">
+            <mat-label>Search card</mat-label>
+            <input
+                type="text"
+                matInput
+                placeholder="Card text"
+                [(ngModel)]="searchCard"
+            />
+        </mat-form-field>
+        <div>
+            <app-dialog
+                (emitAdd)="onAddColumn($event)"
+                question="Add new column"
+            >
+                <button mat-raised-button color="primary">New column</button>
+            </app-dialog>
+        </div>
+    </div>
+    <div class="container-fluid px-5">
+        <div cdkDropListGroup class="row">
+            <div
+                class="col-sm-6 col-lg-3 mb-3"
+                *ngFor="let column of this.boardService.getBoard$() | async"
+            >
+                <div
+                    class="
+                        d-flex
+                        justify-content-between
+                        align-items-center
+                        p-2
+                        shadow-sm
+                        column-header
+                    "
+                >
+                    <div>
+                        <h2 class="m-0">{{ column.title }}</h2>
+                        <small>Created by: {{ column.createdByName }}</small>
+                    </div>
+                    <button mat-icon-button [matMenuTriggerFor]="beforeMenu">
+                        <mat-icon>more_vert</mat-icon>
+                    </button>
+                    <mat-menu #beforeMenu="matMenu" xPosition="before">
+                        <app-dialog
+                            (emitEdit)="onEditColumn($event, column._id)"
+                            [question]="'Edit column title: ' + column.title"
+                            [text]="column.title"
+                        >
+                            <button mat-menu-item (click)="('123')">
+                                <mat-icon class="icon">edit</mat-icon>
+                                <span>Edit column title</span>
+                            </button>
+                        </app-dialog>
+
+                        <button mat-menu-item [matMenuTriggerFor]="colorsMenu">
+                            <mat-icon class="icon">format_color_fill</mat-icon>
+                            <span>Set column color</span>
+                        </button>
+                        <hr class="m-0" />
+                        <button
+                            mat-menu-item
+                            (click)="onClearColumn(column._id)"
+                        >
+                            <mat-icon class="icon">clear_all</mat-icon>
+                            <span>Clear column</span>
+                        </button>
+                        <button
+                            mat-menu-item
+                            (click)="onDeleteColumn(column._id)"
+                        >
+                            <mat-icon class="icon">delete</mat-icon>
+                            <span>Delete column</span>
+                        </button>
+                    </mat-menu>
+                    <mat-menu #colorsMenu="matMenu">
+                        <button
+                            mat-menu-item
+                            *ngFor="let color of boardService.getColors()"
+                            (click)="onChangeColor(column._id, color)"
+                        >
+                            <div style="display: flex">
+                                <div
+                                    [style]="
+                                        'margin: auto 0; height: 20px; width: 20px; background-color: ' +
+                                        color +
+                                        '; '
+                                    "
+                                ></div>
+                                {{ color }}
+                            </div>
+                        </button>
+                    </mat-menu>
+                </div>
+
+                <app-dialog
+                    (emitAdd)="onAddCard($event, column._id)"
+                    [question]="'Add new card in ' + column.title + ' column'"
+                >
+                    <button mat-raised-button class="w-100 mb-1 btn-add">
+                        +
+                    </button>
+                </app-dialog>
+
+                <div
+                    class="board-list"
+                    cdkDropList
+                    [cdkDropListData]="column.cards"
+                    (cdkDropListDropped)="drop($event, column._id)"
+                >
+                    <div
+                        class="mb-1"
+                        *ngFor="
+                            let card of column.cards
+                                | filterCards: searchCard
+                                | sortCards
+                        "
+                    >
+                        <div
+                            [class]="'board-box ' + column.color"
+                            cdkDrag
+                            [cdkDragData]="card"
+                            [cdkDragBoundary]="card.pin ? '.board-list' : ''"
+                            [ngStyle]="{ backgroundColor: column.color }"
+                        >
+                            <app-board-item
+                                [card]="card"
+                                (emitAddComment)="onAddComment($event)"
+                                (emitLike)="onChangeLikes($event)"
+                                (emitDeleteCard)="onDeleteCard($event)"
+                                (emitPinCard)="onPinCard($event)"
+                                (emitEditCard)="onEditCard($event)"
+                            >
+                                <div *ngFor="let comment of card.comments">
+                                    <app-comment-item
+                                        [comment]="comment"
+                                        (emitDeleteComment)="
+                                            onDeleteComment($event)
+                                        "
+                                    ></app-comment-item>
+                                </div>
+                            </app-board-item>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

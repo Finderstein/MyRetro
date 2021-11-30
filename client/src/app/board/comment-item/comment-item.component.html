@@ -1,0 +1,13 @@
+<div class="shadow-sm p-3 mb-2 comment-item position-relative">
+    <div>
+        <p>{{ comment.text }}</p>
+        <small>Created by: {{ comment.createdByName }}</small>
+    </div>
+    <button
+        mat-icon-button
+        class="icon-delete"
+        (click)="onCommentEmit(comment)"
+    >
+        <mat-icon class="icon">delete</mat-icon>
+    </button>
+</div>

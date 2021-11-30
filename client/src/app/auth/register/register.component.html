@@ -1,0 +1,146 @@
+<mat-grid-list cols="1" rowHeight="500px">
+    <mat-grid-tile>
+        <form class="w-100" [formGroup]="form" (ngSubmit)="onSubmit()">
+            <div class="container w-50">
+                <h1 class="text-center mb-2">Welcome to My Retro Board</h1>
+                <h3 class="text-center mb-4">Registrate to view board</h3>
+                <div class="d-flex justify-content-between mb-0">
+                    <mat-form-field appearance="fill" class="name-field">
+                        <mat-label>First Name</mat-label>
+                        <input
+                            type="text"
+                            matInput
+                            formControlName="firstName"
+                        />
+                    </mat-form-field>
+
+                    <mat-form-field appearance="fill" style="width: 48%">
+                        <mat-label>Last Name</mat-label>
+                        <input
+                            type="text"
+                            matInput
+                            formControlName="lastName"
+                        />
+                    </mat-form-field>
+                </div>
+                <div class="d-flex">
+                    <div
+                        class="validation mb-2"
+                        *ngIf="
+                            form.controls['firstName'].invalid &&
+                            form.controls['firstName'].touched
+                        "
+                    >
+                        <small
+                            *ngIf="
+                                form.controls['firstName'].hasError('required')
+                            "
+                        >
+                            Field "First Name" cannot be empty.
+                        </small>
+                        <small
+                            *ngIf="
+                                form.controls['firstName'].hasError('minlength')
+                            "
+                        >
+                            Field "First Name" must be longer than 3 symbols.
+                        </small>
+                    </div>
+                    <div
+                        class="validation mb-2"
+                        *ngIf="
+                            form.controls['lastName'].invalid &&
+                            form.controls['lastName'].touched
+                        "
+                    >
+                        <small
+                            *ngIf="
+                                form.controls['lastName'].hasError('required')
+                            "
+                        >
+                            Field "Last Name" cannot be empty.
+                        </small>
+                        <small
+                            *ngIf="
+                                form.controls['lastName'].hasError('minlength')
+                            "
+                        >
+                            Field "Last Name" must be longer than 3 symbols.
+                        </small>
+                    </div>
+                </div>
+                <mat-form-field appearance="fill" class="w-100 mt-1">
+                    <mat-label>Email address</mat-label>
+                    <input
+                        type="email"
+                        matInput
+                        placeholder="Ex. pat@example.com"
+                        formControlName="email"
+                    />
+                </mat-form-field>
+                <div
+                    class="validation mb-2"
+                    *ngIf="
+                        form.controls['email'].invalid &&
+                        form.controls['email'].touched
+                    "
+                >
+                    <small *ngIf="form.controls['email'].hasError('required')">
+                        Field "Email" cannot be empty
+                    </small>
+                    <small *ngIf="form.controls['email'].hasError('email')">
+                        Field "Email" must be valid
+                    </small>
+                </div>
+                <mat-form-field appearance="fill" class="w-100">
+                    <mat-label>Enter password</mat-label>
+                    <input
+                        matInput
+                        [type]="hide ? 'password' : 'text'"
+                        formControlName="password"
+                    />
+                    <button
+                        type="button"
+                        mat-icon-button
+                        matSuffix
+                        (click)="hide = !hide"
+                        [attr.aria-label]="'Hide password'"
+                        [attr.aria-pressed]="hide"
+                        style="border: none"
+                    >
+                        <mat-icon>
+                            {{ hide ? "visibility_off" : "visibility" }}
+                        </mat-icon>
+                    </button>
+                </mat-form-field>
+                <div
+                    class="validation mb-2"
+                    *ngIf="
+                        form.controls['password'].invalid &&
+                        form.controls['password'].touched
+                    "
+                >
+                    <small
+                        *ngIf="form.controls['password'].hasError('required')"
+                    >
+                        Field "Password" cannot be empty
+                    </small>
+                    <small
+                        *ngIf="form.controls['password'].hasError('minlength')"
+                    >
+                        Field "Password" must be longer than 5 symbols
+                    </small>
+                </div>
+                <button
+                    type="submit"
+                    class="float-end"
+                    mat-raised-button
+                    color="primary"
+                    [disabled]="form.invalid"
+                >
+                    Register
+                </button>
+            </div>
+        </form>
+    </mat-grid-tile>
+</mat-grid-list>
