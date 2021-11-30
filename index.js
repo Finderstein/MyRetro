@@ -20,16 +20,16 @@ const __dirname = path.resolve(path.dirname(""));
 
 app.use(express.static(__dirname + "/public"));
 
-// simple route
-app.get("/", (req, res) => {
-	res.sendFile(path.join(__dirname, "public/index.html"));
-});
-
 // routes
 app.use("/api/auth", authRouter);
 app.use("/api/column", columnRouter);
 app.use("/api/card", cardRouter);
 app.use("/api/comment", commentsRouter);
+
+// simple route
+app.get("*", (req, res) => {
+	res.sendFile(path.join(__dirname, "public/index.html"));
+});
 
 const reservePORT = 8080; // Removing warning from eslint
 const PORT = process.env.PORT || reservePORT;
