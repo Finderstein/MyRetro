@@ -1,5 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Card } from 'src/app/models/board.model';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ServiceCard } from 'src/app/models/service-board.model';
 import { BoardService } from 'src/app/services/board.service';
 
@@ -8,7 +7,7 @@ import { BoardService } from 'src/app/services/board.service';
     templateUrl: './board-item.component.html',
     styleUrls: ['./board-item.component.scss'],
 })
-export class BoardItemComponent implements OnInit {
+export class BoardItemComponent {
     @Input()
     card!: ServiceCard;
 
@@ -26,9 +25,7 @@ export class BoardItemComponent implements OnInit {
     commentInput = '';
     open = false;
 
-    constructor(private boardService: BoardService) {}
-
-    ngOnInit(): void {}
+    constructor() {}
 
     onCommentEmit(cardId: string) {
         this.emitAddComment.emit({ cardId, text: this.commentInput });

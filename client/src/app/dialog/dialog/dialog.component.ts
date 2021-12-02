@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogBodyComponent } from '../dialog-body/dialog-body.component';
 
@@ -7,7 +7,7 @@ import { DialogBodyComponent } from '../dialog-body/dialog-body.component';
     templateUrl: './dialog.component.html',
     styleUrls: ['./dialog.component.scss'],
 })
-export class DialogComponent implements OnInit {
+export class DialogComponent {
     @Input()
     question!: string;
     @Input()
@@ -21,8 +21,6 @@ export class DialogComponent implements OnInit {
     emitEdit: EventEmitter<any> = new EventEmitter();
 
     constructor(public dialog: MatDialog) {}
-
-    ngOnInit(): void {}
 
     openDialog() {
         const dialogRef = this.dialog.open(DialogBodyComponent, {

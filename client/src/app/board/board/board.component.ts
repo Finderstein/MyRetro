@@ -1,23 +1,21 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import {
     CdkDragDrop,
     moveItemInArray,
     transferArrayItem,
 } from '@angular/cdk/drag-drop';
 import { BoardService } from 'src/app/services/board.service';
-import { Card, Column, Comment } from 'src/app/models/board.model';
+import { Comment } from 'src/app/models/board.model';
 
 @Component({
     selector: 'app-board',
     templateUrl: './board.component.html',
     styleUrls: ['./board.component.scss'],
 })
-export class BoardComponent implements OnInit {
+export class BoardComponent {
     constructor(public boardService: BoardService) {}
 
     searchCard = '';
-
-    ngOnInit(): void {}
 
     drop(event: CdkDragDrop<string[]>, columnId: string) {
         this.boardService.changeCardParent(
