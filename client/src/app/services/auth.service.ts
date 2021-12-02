@@ -2,7 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
-import { User } from '../models/column.model';
+import { Response } from '../models/response.model';
+import { User } from '../models/user.model';
 
 @Injectable({
     providedIn: 'root',
@@ -33,7 +34,7 @@ export class AuthService {
                 email,
                 password,
             })
-            .subscribe((resp: any) => {
+            .subscribe((resp: Response) => {
                 if (resp.message) {
                     alert(resp.message);
                 } else if (resp.jwt_token && resp.user) {
@@ -69,7 +70,7 @@ export class AuthService {
                 email,
                 password,
             })
-            .subscribe((resp: any) => {
+            .subscribe((resp: Response) => {
                 if (resp.message) {
                     alert(resp.message);
                     if (resp.message === 'Profile created successfully') {

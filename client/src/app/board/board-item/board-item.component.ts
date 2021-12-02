@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Card } from 'src/app/models/column.model';
+import { Card } from 'src/app/models/board.model';
+import { ServiceCard } from 'src/app/models/service-board.model';
 import { BoardService } from 'src/app/services/board.service';
 
 @Component({
@@ -9,7 +10,7 @@ import { BoardService } from 'src/app/services/board.service';
 })
 export class BoardItemComponent implements OnInit {
     @Input()
-    card!: any;
+    card!: ServiceCard;
 
     @Output()
     emitAddComment: EventEmitter<any> = new EventEmitter();

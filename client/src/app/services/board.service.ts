@@ -1,18 +1,23 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import * as e from 'cors';
-import { BehaviorSubject, forkJoin, Observable } from 'rxjs';
-import { Card, Column, Comment } from '../models/column.model';
+import { BehaviorSubject, forkJoin } from 'rxjs';
+import { Card, Column, Comment } from '../models/board.model';
+import {
+    CardsResponse,
+    ColumnsResponse,
+    CommentsResponse,
+} from '../models/response.model';
+import { ServiceColumn } from '../models/service-board.model';
 import { AuthService } from './auth.service';
 
 @Injectable({
     providedIn: 'root',
 })
 export class BoardService {
-    private board: any[] = [];
+    private board: ServiceColumn[] = [];
     private board$ = new BehaviorSubject<any>(false);
 
-    columns: Column[] = [];
+    columns!: Column[];
     cards: Card[] = [];
     comments: Comment[] = [];
 
@@ -36,13 +41,13 @@ export class BoardService {
 
     loadBoard() {
         forkJoin([
-            this.http.get<Column[]>('http://localhost:8080/api/column'),
-            this.http.get<Card[]>('http://localhost:8080/api/card'),
-            this.http.get<Comment[]>('http://localhost:8080/api/comment'),
-        ]).subscribe((result: any) => {
-            this.columns = result[0].columns;
-            this.cards = result[1].cards;
-            this.comments = result[2].comments;
+            this.http.get('http://localhost:8080/api/column'),
+            this.http.get('http://localhost:8080/api/card'),
+            this.http.get('http://localhost:8080/api/comment'),
+        ]).subscribe((result: [Object, Object, Object]) => {
+            this.columns = (result[0] as ColumnsResponse).columns;
+            this.cards = (result[1] as CardsResponse).cards;
+            this.comments = (result[2] as CommentsResponse).comments;
 
             this.board = [];
             for (const column of this.columns) {
@@ -98,7 +103,7 @@ export class BoardService {
                 title: title,
                 color: this.getColorForColumn(),
             })
-            .subscribe((resp: any) => {
+            .subscribe(() => {
                 this.loadBoard();
             });
     }
@@ -114,7 +119,7 @@ export class BoardService {
             .put('http://localhost:8080/api/column', {
                 column,
             })
-            .subscribe((resp: any) => {
+            .subscribe(() => {
                 this.loadBoard();
             });
     }
@@ -122,7 +127,7 @@ export class BoardService {
     clearColumn(columnId: string) {
         this.http
             .delete('http://localhost:8080/api/card/clearColumn/' + columnId)
-            .subscribe((resp: any) => {
+            .subscribe(() => {
                 this.loadBoard();
             });
     }
@@ -138,7 +143,7 @@ export class BoardService {
             .put('http://localhost:8080/api/column', {
                 column,
             })
-            .subscribe((resp: any) => {
+            .subscribe(() => {
                 this.loadBoard();
             });
     }
@@ -146,7 +151,7 @@ export class BoardService {
     deleteColumn(columnId: string) {
         this.http
             .delete('http://localhost:8080/api/column/' + columnId)
-            .subscribe((resp: any) => {
+            .subscribe(() => {
                 this.loadBoard();
             });
     }
@@ -280,7 +285,7 @@ export class BoardService {
             .put('http://localhost:8080/api/card', {
                 card,
             })
-            .subscribe((resp: any) => {
+            .subscribe(() => {
                 this.loadBoard();
             });
     }
@@ -311,7 +316,7 @@ export class BoardService {
             .put('http://localhost:8080/api/card', {
                 card,
             })
-            .subscribe((resp: any) => {
+            .subscribe(() => {
                 this.loadBoard();
             });
     }
@@ -326,7 +331,7 @@ export class BoardService {
             .put('http://localhost:8080/api/card', {
                 card,
             })
-            .subscribe((resp: any) => {
+            .subscribe(() => {
                 this.loadBoard();
             });
     }
@@ -341,7 +346,7 @@ export class BoardService {
                 parentId: cardId,
                 text,
             })
-            .subscribe((resp: any) => {
+            .subscribe(() => {
                 this.loadBoard();
             });
     }
@@ -349,7 +354,7 @@ export class BoardService {
     deleteComment(commentId: string) {
         this.http
             .delete('http://localhost:8080/api/comment/' + commentId)
-            .subscribe((resp: any) => {
+            .subscribe(() => {
                 this.loadBoard();
             });
     }

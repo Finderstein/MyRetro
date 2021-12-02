@@ -16,7 +16,6 @@ import { MatMenuModule } from '@angular/material/menu';
 import { FilterCardsPipe } from '../pipes/filter-cards.pipe';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { HttpClientModule } from '@angular/common/http';
-import { ParentFilterPipe } from '../pipes/parent-filter.pipe';
 import { SortCardsPipe } from '../pipes/sort-cards.pipe';
 
 @NgModule({
@@ -25,7 +24,6 @@ import { SortCardsPipe } from '../pipes/sort-cards.pipe';
         BoardItemComponent,
         CommentItemComponent,
         FilterCardsPipe,
-        ParentFilterPipe,
         SortCardsPipe,
     ],
     imports: [

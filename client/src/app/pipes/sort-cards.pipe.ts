@@ -1,11 +1,12 @@
 import { Pipe, PipeTransform } from '@angular/core';
+import { ServiceCard } from '../models/service-board.model';
 
 @Pipe({
     name: 'sortCards',
 })
 export class SortCardsPipe implements PipeTransform {
-    transform(array: any[]): any[] {
-        array.sort((a: any, b: any) => {
+    transform(array: ServiceCard[]): ServiceCard[] {
+        array.sort((a: ServiceCard, b: ServiceCard) => {
             if (a['columnIndex'] < b['columnIndex']) {
                 return -1;
             } else if (a['columnIndex'] > b['columnIndex']) {
