@@ -1,7 +1,7 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, catchError, throwError } from 'rxjs';
 import { Response } from '../models/response.model';
 import { User } from '../models/user.model';
 
@@ -28,12 +28,18 @@ export class AuthService {
         return this.user;
     }
 
+    handleError(error: HttpErrorResponse) {
+        alert(error.error.message);
+        return throwError(error);
+    }
+
     login(email: string, password: string) {
         return this.http
             .post('/api/auth/login', {
                 email,
                 password,
             })
+            .pipe(catchError(this.handleError))
             .subscribe((resp: Response) => {
                 if (resp.message) {
                     alert(resp.message);
@@ -70,6 +76,7 @@ export class AuthService {
                 email,
                 password,
             })
+            .pipe(catchError(this.handleError))
             .subscribe((resp: Response) => {
                 if (resp.message) {
                     alert(resp.message);
