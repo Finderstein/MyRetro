@@ -30,7 +30,7 @@ export class AuthService {
 
     login(email: string, password: string) {
         return this.http
-            .post('http://localhost:8080/api/auth/login', {
+            .post('/api/auth/login', {
                 email,
                 password,
             })
@@ -64,7 +64,7 @@ export class AuthService {
         password: string
     ) {
         return this.http
-            .post('http://localhost:8080/api/auth/register', {
+            .post('/api/auth/register', {
                 firstname,
                 lastname,
                 email,

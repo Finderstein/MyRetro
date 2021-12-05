@@ -41,9 +41,9 @@ export class BoardService {
 
     loadBoard() {
         forkJoin([
-            this.http.get('http://localhost:8080/api/column'),
-            this.http.get('http://localhost:8080/api/card'),
-            this.http.get('http://localhost:8080/api/comment'),
+            this.http.get('/api/column'),
+            this.http.get('/api/card'),
+            this.http.get('/api/comment'),
         ]).subscribe((result: [Object, Object, Object]) => {
             this.columns = (result[0] as ColumnsResponse).columns;
             this.cards = (result[1] as CardsResponse).cards;
@@ -97,7 +97,7 @@ export class BoardService {
     addColumn(title: string) {
         const user = this.authService.getUser();
         this.http
-            .post('http://localhost:8080/api/column', {
+            .post('/api/column', {
                 createdByName: user?.firstname + ' ' + user?.lastname,
                 createdByEmail: user?.email,
                 title: title,
@@ -116,7 +116,7 @@ export class BoardService {
         column.color = color;
 
         this.http
-            .put('http://localhost:8080/api/column', {
+            .put('/api/column', {
                 column,
             })
             .subscribe(() => {
@@ -125,11 +125,9 @@ export class BoardService {
     }
 
     clearColumn(columnId: string) {
-        this.http
-            .delete('http://localhost:8080/api/card/clearColumn/' + columnId)
-            .subscribe(() => {
-                this.loadBoard();
-            });
+        this.http.delete('/api/card/clearColumn/' + columnId).subscribe(() => {
+            this.loadBoard();
+        });
     }
 
     editColumn(columnId: string, title: string) {
@@ -140,7 +138,7 @@ export class BoardService {
         column.title = title;
 
         this.http
-            .put('http://localhost:8080/api/column', {
+            .put('/api/column', {
                 column,
             })
             .subscribe(() => {
@@ -149,11 +147,9 @@ export class BoardService {
     }
 
     deleteColumn(columnId: string) {
-        this.http
-            .delete('http://localhost:8080/api/column/' + columnId)
-            .subscribe(() => {
-                this.loadBoard();
-            });
+        this.http.delete('/api/column/' + columnId).subscribe(() => {
+            this.loadBoard();
+        });
     }
 
     // Cards
@@ -161,7 +157,7 @@ export class BoardService {
         const user = this.authService.getUser();
 
         this.http
-            .post('http://localhost:8080/api/card', {
+            .post('/api/card', {
                 createdByName: user?.firstname + ' ' + user?.lastname,
                 createdByEmail: user?.email,
                 parentId: columnId,
@@ -195,7 +191,7 @@ export class BoardService {
         });
 
         this.http
-            .put('http://localhost:8080/api/card', {
+            .put('/api/card', {
                 card: addedCard,
             })
             .subscribe(() =>
@@ -269,7 +265,7 @@ export class BoardService {
             });
 
         const httpPutObsArr = cards.map((card) =>
-            this.http.put('http://localhost:8080/api/card', {
+            this.http.put('/api/card', {
                 card,
             })
         );
@@ -282,7 +278,7 @@ export class BoardService {
         card.text = text;
 
         this.http
-            .put('http://localhost:8080/api/card', {
+            .put('/api/card', {
                 card,
             })
             .subscribe(() => {
@@ -296,7 +292,7 @@ export class BoardService {
         ) as Card;
 
         this.http
-            .delete('http://localhost:8080/api/card/' + cardId)
+            .delete('/api/card/' + cardId)
             .subscribe(() =>
                 this.changeCardsIndex(
                     deletedCard.parentId,
@@ -313,7 +309,7 @@ export class BoardService {
         card.pin = !card.pin;
 
         this.http
-            .put('http://localhost:8080/api/card', {
+            .put('/api/card', {
                 card,
             })
             .subscribe(() => {
@@ -328,7 +324,7 @@ export class BoardService {
         card.likes = card.likes < 0 ? 0 : card.likes;
 
         this.http
-            .put('http://localhost:8080/api/card', {
+            .put('/api/card', {
                 card,
             })
             .subscribe(() => {
@@ -340,7 +336,7 @@ export class BoardService {
     addComment(cardId: string, text: string) {
         const user = this.authService.getUser();
         this.http
-            .post('http://localhost:8080/api/comment', {
+            .post('/api/comment', {
                 createdByName: user?.firstname + ' ' + user?.lastname,
                 createdByEmail: user?.email,
                 parentId: cardId,
@@ -352,10 +348,8 @@ export class BoardService {
     }
 
     deleteComment(commentId: string) {
-        this.http
-            .delete('http://localhost:8080/api/comment/' + commentId)
-            .subscribe(() => {
-                this.loadBoard();
-            });
+        this.http.delete('/api/comment/' + commentId).subscribe(() => {
+            this.loadBoard();
+        });
     }
 }
